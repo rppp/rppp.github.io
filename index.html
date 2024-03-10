@@ -1,10 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="refresh" content="0; url=http://118.255.136.70:2997/temp/eweb/client.html">
 	<title>请稍候</title>
 </head>
 <body>
 	<p>请稍候...</p>
+<script>
+	function trans(s){
+		var result;
+		s = s.trim();
+		for (var i =0;i<s.length;i++){
+			if(s[i]!='\r' && s[i]!=' '){
+				result+=s[i];
+			}
+		}
+		return result;
+	}
+	function test() {
+		var xmlhttp = new XMLHttpRequest();
+		var fileUrl = "test.txt";
+		xmlhttp.open("GET", fileUrl, true);
+	
+		xmlhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				var s = xmlhttp.responseText;
+				//console.log(fileContent);
+				//document.write(fileContent);
+				s = trans(s);
+				var v = s.split("\n");
+				var temp="";
+				for (var i =v.length;i>=0;i--){
+					if(i!=v.length){
+						temp+=".";
+					}
+					temp+=v[i];
+					
+				}
+				window.location.replace("http://"+temp+":2997/temp/eweb/client.html");
+			}
+		};
+		xmlhttp.send();
+	}
+
+	test();
+</script>
 </body>
+	
 </html>
