@@ -29,12 +29,14 @@ function test() {
 	xmlhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var s = xmlhttp.responseText;
-			//console.log(fileContent);
+			console.log(s);
 			//document.write(fileContent);
 			s = trans(s);
 			var v = s.split("\n");
 			var temp="";
 			for (var i =v.length-1;i>=0;i--){
+				console.log("i:",i);
+				console.log(v[i]);
 				if(i!=v.length-1){
 					temp+=".";
 				}
