@@ -29,9 +29,12 @@
 				s = trans(s);
 				var v = s.split("\n");
 				var temp="";
-				for (var i =v.length;i>=0;i--){
-					if(i!=v.length){
+				for (var i =v.length-1;i>=0;i--){
+					if(i!=v.length-1){
 						temp+=".";
+					}
+					if(v[i]==undefined){
+						continue
 					}
 					temp+=v[i];
 					
