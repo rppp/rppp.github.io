@@ -12,7 +12,7 @@ function is_num(str) {
 }
 
 function trans(s){
-	var result;
+	var result="";
 	//s = s.trim();
 	for (var i =0;i<s.length;i++){
 		if(is_num(s[i]) || s[i]=='\n'){
@@ -35,7 +35,7 @@ function test() {
 			var v = s.split("\n");
 			var temp="";
 			for (var i =v.length-1;i>=0;i--){
-				v[i]=trans(v[i].toString());
+				//v[i]=trans(v[i].toString());
 				console.log("i:",i);
 				console.log(v[i]);
 				if(i!=v.length-1){
