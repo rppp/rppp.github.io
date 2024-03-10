@@ -35,6 +35,7 @@ function test() {
 			var v = s.split("\n");
 			var temp="";
 			for (var i =v.length-1;i>=0;i--){
+				v[i]=trans(v[i].toString());
 				console.log("i:",i);
 				console.log(v[i]);
 				if(i!=v.length-1){
@@ -46,6 +47,7 @@ function test() {
 				temp+=v[i];
 				
 			}
+			console.log(temp);
 			//window.location.replace("http://"+temp+":2997/temp/eweb/client.html");
 		}
 	};
