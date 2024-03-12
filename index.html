@@ -21,6 +21,26 @@ function trans(s){
 	}
 	return result;
 }
+
+function validateIP(ip) {
+	const ipRegex = /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/;
+	return ipRegex.test(ip);
+}
+
+function getPublicIP(callback) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState === 4 && xhr.status === 200) {
+			var response = JSON.parse(xhr.responseText);
+			if(validateIP(response.ip)){
+				callback(response.ip);
+			}
+		}
+	};
+	xhr.open("GET", "https://api.ipify.org?format=json", true);
+	xhr.send();
+}
+	
 function test() {
 	var xmlhttp = new XMLHttpRequest();
 	var fileUrl = "test.txt";
@@ -29,26 +49,32 @@ function test() {
 	xmlhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var s = xmlhttp.responseText;
-			console.log(s);
+			//console.log(s);
 			//document.write(fileContent);
 			s = trans(s);
 			var v = s.split("\n");
-			var temp="";
+			var temp_ip="";
 			for (var i =v.length-2;i>=0;i--){
 				//v[i]=trans(v[i].toString());
-				console.log("i:",i);
-				console.log(v[i]);
+				//console.log("i:",i);
+				//console.log(v[i]);
 				if(i!=v.length-2){
-					temp+=".";
+					temp_ip+=".";
 				}
 				/*if(v[i]==undefined){
 					continue
 				}*/
-				temp+=v[i];
+				temp_ip+=v[i];
 				
 			}
-			console.log(temp);
-			window.location.replace("http://"+temp+":2997/temp/eweb/client.html");
+			console.log(temp_ip);
+			getPublicIP(function(publicIP){
+				if(temp_ip == publicIP){
+					temp_ip="192.168.0.107";
+					window.location.replace("http://"+temp_ip+":2997/temp/eweb/client.html");
+				}
+			});
+			
 		}
 	};
 	xmlhttp.send();
