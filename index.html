@@ -6,11 +6,10 @@
 <body>
 	<p>请稍候...</p>
 <script>
-	
+
 function is_num(str) {
 	return /^\d+$/.test(str);
 }
-
 function trans(s){
 	var result="";
 	//s = s.trim();
@@ -40,12 +39,9 @@ function getPublicIP(callback) {
 	xhr.open("GET", "https://api.ipify.org?format=json", true);
 	xhr.send();
 }
-	
-function test() {
-	var xmlhttp = new XMLHttpRequest();
-	var fileUrl = "test.txt";
-	xmlhttp.open("GET", fileUrl, true);
 
+function get_ip_file(callback) {
+	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var s = xmlhttp.responseText;
@@ -67,20 +63,37 @@ function test() {
 				temp_ip+=v[i];
 				
 			}
-			console.log(temp_ip);
-			getPublicIP(function(publicIP){
-				if(temp_ip == publicIP){
-					temp_ip="192.168.0.107";
-				}
-				window.location.replace("http://"+temp_ip+":2997/temp/eweb/client.html");
-			});
+			callback(temp_ip);
 			
 		}
 	};
+	xmlhttp.open("GET", "test.txt", true);
 	xmlhttp.send();
 }
 
-test();
+var g_server_ip=null;
+var g_public_ip=null;
+function connectWebSocket() {
+	var temp_ip = g_server_ip;
+	if(g_server_ip == g_public_ip){
+		temp_ip = "192.168.0.107";
+	}
+	window.location.replace("http://"+temp_ip+":2997/temp/eweb/client.html");
+}
+get_ip_file(function(server_ip){
+	//console.log(g_server_ip,g_public_ip);
+	g_server_ip = server_ip;
+	if(g_server_ip!=null && g_public_ip !=null){
+		connectWebSocket();
+	}
+});
+getPublicIP(function(public_ip){
+	//console.log(g_server_ip,g_public_ip);
+	g_public_ip = public_ip;
+	if(g_server_ip!=null && g_public_ip !=null){
+		connectWebSocket();
+	}
+});
 	
 </script>
 </body>
