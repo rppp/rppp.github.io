@@ -78,7 +78,13 @@ function connectWebSocket() {
 	if(g_server_ip == g_public_ip){
 		temp_ip = "192.168.0.107";
 	}
-	window.location.replace("http://"+temp_ip+":2997/temp/eweb/client.html");
+	const currentUrl = document.URL;
+	var file = "client.html";
+	if(currentUrl.endsWith(".html")){
+		var pos = currentUrl.lastIndexOf("/");
+		file = currentUrl.substring(pos + 1, currentUrl.length);
+	}
+	window.location.replace("http://"+temp_ip+":2997/temp/eweb/"+file);
 }
 get_ip_file(function(server_ip){
 	//console.log(g_server_ip,g_public_ip);
