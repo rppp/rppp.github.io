@@ -27,7 +27,7 @@ function getPublicIP(callback) {
 			}
 		}
 	};
-	xhr.open("GET", "http://api.ipify.org?format=json", true);
+	xhr.open("GET", "https://api.ipify.org?format=json", true);
 	xhr.send();
 }
 
