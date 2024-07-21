@@ -36,6 +36,9 @@
         button:hover {
             background-color: #45a049;
         }
+        .rate-control {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -43,15 +46,29 @@
         <h2>文本转语音</h2>
         <textarea id="text-to-speak" placeholder="请输入要转换成语音的文本"></textarea>
         <br>
+        <div class="rate-control">
+            <label for="rate">语速: </label>
+            <input type="range" id="rate" min="0.5" max="4" value="1" step="0.1">
+            <span id="rate-value">1</span>
+        </div>
+        <br>
         <button onclick="speak()">播放语音</button>
     </div>
 
     <script>
+        const rateInput = document.getElementById('rate');
+        const rateValue = document.getElementById('rate-value');
+
+        rateInput.oninput = function() {
+            rateValue.textContent = parseFloat(this.value).toFixed(1);
+        }
+
         function speak() {
             const text = document.getElementById('text-to-speak').value;
             if (text) {
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'zh-CN'; // 设置语言为中文
+                utterance.rate = parseFloat(rateInput.value); // 设置语速
                 speechSynthesis.speak(utterance);
             } else {
                 alert('请输入要转换成语音的文本');
