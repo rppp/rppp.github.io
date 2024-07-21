@@ -60,7 +60,7 @@
     <p>点击按钮开始录音，再次点击停止录音</p>
     <button id="recordButton">开始录音</button>
     <div id="audioLink">
-      <a href="#" id="downloadLink" download="recorded_audio.wav">下载录音</a>
+      <a href="#" id="downloadLink" download="recorded_audio.webm">下载录音</a>
       <button id="playButton">播放</button>
     </div>
   </div>
@@ -99,7 +99,7 @@
         });
 
         mediaRecorder.addEventListener('stop', () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
           const audioUrl = URL.createObjectURL(audioBlob);
           downloadLink.href = audioUrl;
           audioLink.style.display = 'block';
