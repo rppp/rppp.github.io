@@ -1,0 +1,115 @@
+<html><head><base href="https://webrecorder.ai/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能录音助手</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      text-align: center;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #recordButton {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #recordButton:hover {
+      background-color: #45a049;
+    }
+    #audioLink {
+      display: none;
+      margin-top: 1rem;
+    }
+    #playButton {
+      font-size: 1rem;
+      padding: 5px 10px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #playButton:hover {
+      background-color: #007B9A;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>智能录音助手</h1>
+    <p>点击按钮开始录音，再次点击停止录音</p>
+    <button id="recordButton">开始录音</button>
+    <div id="audioLink">
+      <a href="#" id="downloadLink" download="recorded_audio.webm">下载录音</a>
+      <button id="playButton">播放</button>
+    </div>
+  </div>
+
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+    const recordButton = document.getElementById('recordButton');
+    const audioLink = document.getElementById('audioLink');
+    const downloadLink = document.getElementById('downloadLink');
+    const playButton = document.getElementById('playButton');
+
+    recordButton.addEventListener('click', toggleRecording);
+
+    async function toggleRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        stopRecording();
+      } else {
+        startRecording();
+      }
+    }
+
+    async function startRecording() {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.addEventListener('dataavailable', event => {
+        audioChunks.push(event.data);
+      });
+
+      mediaRecorder.addEventListener('stop', () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        downloadLink.href = audioUrl;
+        audioLink.style.display = 'block';
+      });
+
+      mediaRecorder.start();
+      recordButton.textContent = '停止录音';
+      recordButton.style.backgroundColor = '#f44336';
+    }
+
+    function stopRecording() {
+      mediaRecorder.stop();
+      recordButton.textContent = '开始录音';
+      recordButton.style.backgroundColor = '#4CAF50';
+    }
+
+    playButton.addEventListener('click', () => {
+      const audio = new Audio(downloadLink.href);
+      audio.play();
+    });
+  </script>
+</body></html>
