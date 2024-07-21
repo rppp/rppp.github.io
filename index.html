@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>请稍候</title>
+    <meta charset="UTF-8">
+    <title>GitHub Static Page</title>
 </head>
 <body>
-	<p>请稍候...</p>
-<script src="redirect.js">
+    <h1>GitHub Static Page</h1>
+    <button id="fetchData">Fetch Data</button>
+    <div id="dataContainer"></div>
 
-
-	
-</script>
+    <script>
+        document.getElementById('fetchData').addEventListener('click', function() {
+            fetch('http://rppp.fun:1624/jsclient.html')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('dataContainer').innerText = JSON.stringify(data);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
-	
 </html>
