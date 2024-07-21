@@ -60,7 +60,7 @@
     <p>点击按钮开始录音，再次点击停止录音</p>
     <button id="recordButton">开始录音</button>
     <div id="audioLink">
-      <a href="#" id="downloadLink" download="recorded_audio.webm">下载录音</a>
+      <a href="#" id="downloadLink" download="recorded_audio.wav">下载录音</a>
       <button id="playButton">播放</button>
     </div>
   </div>
@@ -86,6 +86,11 @@
     async function startRecording() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (!window.MediaRecorder) {
+          alert('当前浏览器不支持录音功能，请更换浏览器');
+          return;
+        }
+
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
 
@@ -94,7 +99,7 @@
         });
 
         mediaRecorder.addEventListener('stop', () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
           const audioUrl = URL.createObjectURL(audioBlob);
           downloadLink.href = audioUrl;
           audioLink.style.display = 'block';
@@ -116,7 +121,9 @@
 
     playButton.addEventListener('click', () => {
       const audio = new Audio(downloadLink.href);
-      audio.play();
+      audio.play().catch(error => {
+        console.error('播放错误:', error);
+      });
     });
   </script>
 </body>
