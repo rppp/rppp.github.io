@@ -90,7 +90,7 @@
       });
 
       mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' });
         const audioUrl = URL.createObjectURL(audioBlob);
         downloadLink.href = audioUrl;
         audioLink.style.display = 'block';
