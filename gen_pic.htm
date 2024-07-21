@@ -1,0 +1,151 @@
+<html><head><base href="https://ai-text2image.com">
+<title>AI Text2Image Generator</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+}
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  height: 100px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: vertical;
+}
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #45a049;
+}
+#result {
+  margin-top: 20px;
+  text-align: center;
+}
+#imageResult {
+  max-width: 100%;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#loading {
+  display: none;
+  text-align: center;
+  margin-top: 20px;
+}
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#error {
+  color: #ff0000;
+  margin-top: 10px;
+  display: none;
+}
+#regenerateBtn {
+  background: #3498db;
+  margin-top: 10px;
+  display: none;
+}
+#regenerateBtn:hover {
+  background: #2980b9;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AI Text2Image Generator</h1>
+  <form id="generateForm">
+    <textarea id="prompt" name="prompt" placeholder="输入你的描述，AI将为你生成图像..."></textarea>
+    <button type="submit">生成图像</button>
+  </form>
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>正在生成图像，请稍候...</p>
+  </div>
+  <div id="result">
+    <img id="imageResult" alt="AI生成的图像基于用户输入的文本描述" src="placeholder.jpg" width="400" height="300">
+    <p id="error">抱歉，生成的图像可能与描述不符。请尝试重新生成或修改描述。</p>
+    <button id="regenerateBtn">重新生成</button>
+  </div>
+</div>
+<footer>
+  <p>探索更多AI创新: <a href="/gallery">图像画廊</a> | <a href="/about">关于我们</a> | <a href="/blog">AI艺术博客</a></p>
+</footer>
+
+<script>
+document.getElementById('generateForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  generateImage();
+});
+
+document.getElementById('regenerateBtn').addEventListener('click', function() {
+  generateImage();
+});
+
+function generateImage() {
+  var prompt = document.getElementById('prompt').value;
+  var loading = document.getElementById('loading');
+  var result = document.getElementById('result');
+  var imageResult = document.getElementById('imageResult');
+  var error = document.getElementById('error');
+  var regenerateBtn = document.getElementById('regenerateBtn');
+  
+  loading.style.display = 'block';
+  result.style.display = 'none';
+  error.style.display = 'none';
+  regenerateBtn.style.display = 'none';
+  
+  // 模拟API调用
+  setTimeout(function() {
+    loading.style.display = 'none';
+    result.style.display = 'block';
+    
+    // 模拟生成的图像与描述不符的情况
+    imageResult.src = 'https://picsum.photos/400/300?random=' + Math.random();
+    imageResult.alt = '基于描述"' + prompt + '"生成的AI图像，但可能不符合预期';
+    
+    error.style.display = 'block';
+    regenerateBtn.style.display = 'inline-block';
+  }, 3000);
+}
+</script>
+</body></html>
