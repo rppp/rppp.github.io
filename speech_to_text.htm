@@ -1,0 +1,126 @@
+<html><head><base href="https://ling1.neocities.org/voice-recognition-demo/"><title>超级语音识别</title><style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #83a4d4, #b6fbff);
+}
+#recognitionButton {
+  font-size: 18px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+#recognitionButton:hover {
+  background-color: #45a049;
+}
+#result {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+  min-height: 100px;
+  width: 80%;
+  max-width: 600px;
+}
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style></head><body>
+<h1>超级语音识别</h1>
+<button id="recognitionButton">开始识别</button>
+<div id="result"></div>
+
+<script>
+const recognitionButton = document.getElementById('recognitionButton');
+const resultDiv = document.getElementById('result');
+
+let recognition;
+let isRecognizing = false;
+
+if ('webkitSpeechRecognition' in window) {
+  recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'zh-CN';
+
+  recognition.onresult = (event) => {
+    let interimTranscript = '';
+    let finalTranscript = '';
+
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      } else {
+        interimTranscript += event.results[i][0].transcript;
+      }
+    }
+
+    resultDiv.innerHTML = finalTranscript + '<i style="color: #999;">' + interimTranscript + '</i>';
+  };
+
+  recognition.onerror = (event) => {
+    console.error('语音识别错误:', event.error);
+    stopRecognition();
+  };
+
+  recognitionButton.addEventListener('click', toggleRecognition);
+} else {
+  recognitionButton.disabled = true;
+  recognitionButton.textContent = '浏览器不支持语音识别';
+  resultDiv.textContent = '很抱歉，您的浏览器不支持语音识别功能。请尝试使用最新版本的Chrome浏览器。';
+}
+
+function toggleRecognition() {
+  if (isRecognizing) {
+    stopRecognition();
+  } else {
+    startRecognition();
+  }
+}
+
+function startRecognition() {
+  recognition.start();
+  isRecognizing = true;
+  recognitionButton.textContent = '结束识别';
+  recognitionButton.classList.add('pulse');
+}
+
+function stopRecognition() {
+  recognition.stop();
+  isRecognizing = false;
+  recognitionButton.textContent = '开始识别';
+  recognitionButton.classList.remove('pulse');
+}
+</script>
+
+<footer>
+<p>探索更多智能语音技术：</p>
+<ul>
+  <li><a href="https://ling1.neocities.org/voice-translation/">实时语音翻译</a></li>
+  <li><a href="https://ling1.neocities.org/voice-commands/">语音控制智能家居</a></li>
+  <li><a href="https://ling1.neocities.org/voice-analysis/">情感分析语音助手</a></li>
+</ul>
+</footer>
+
+</body></html>
