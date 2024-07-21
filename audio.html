@@ -1,4 +1,7 @@
-<html><head><base href="https://webrecorder.ai/">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <base href="https://webrecorder.ai/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>智能录音助手</title>
@@ -81,24 +84,28 @@
     }
 
     async function startRecording() {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
 
-      mediaRecorder.addEventListener('dataavailable', event => {
-        audioChunks.push(event.data);
-      });
+        mediaRecorder.addEventListener('dataavailable', event => {
+          audioChunks.push(event.data);
+        });
 
-      mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        downloadLink.href = audioUrl;
-        audioLink.style.display = 'block';
-      });
+        mediaRecorder.addEventListener('stop', () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          downloadLink.href = audioUrl;
+          audioLink.style.display = 'block';
+        });
 
-      mediaRecorder.start();
-      recordButton.textContent = '停止录音';
-      recordButton.style.backgroundColor = '#f44336';
+        mediaRecorder.start();
+        recordButton.textContent = '停止录音';
+        recordButton.style.backgroundColor = '#f44336';
+      } catch (err) {
+        alert('录音功能不可用: ' + err.message);
+      }
     }
 
     function stopRecording() {
@@ -112,4 +119,5 @@
       audio.play();
     });
   </script>
-</body></html>
+</body>
+</html>
