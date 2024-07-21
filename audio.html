@@ -122,7 +122,7 @@
     playButton.addEventListener('click', () => {
       const audio = new Audio(downloadLink.href);
       audio.play().catch(error => {
-        console.error('播放错误:', error);
+        alert('播放错误:'+error);
       });
     });
   </script>
