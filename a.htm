@@ -1,0 +1,24 @@
+<html>
+  <body>
+    <div>
+      <input type="text" id="userInput" placeholder="Enter your message">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    <div>
+      receive <span id="qwerty"> </span>
+    </div>
+  </body>
+  <script>
+    function callfun(data) {
+      document.getElementById('qwerty').innerHTML = data;
+    }
+
+    function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      const script = document.createElement('script');
+      script.src = `http://rppp.fun:1623/js?call=callfun&message=${encodeURIComponent(userInput)}`;
+      document.body.appendChild(script);
+      document.body.removeChild(script); // 移除已加载的script标签
+    }
+  </script>
+</html>
