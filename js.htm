@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 在线运行工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript 在线运行工具</h1>
+    <button onclick="runCode()">运行</button>
+    <textarea id="code" placeholder="在这里输入您的JavaScript代码"></textarea>
+    <h2>运行结果：</h2>
+    <div id="output"></div>
+
+    <script>
+        function runCode() {
+            const code = document.getElementById('code').value;
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+
+            try {
+                // 重定向 console.log 输出到结果区域
+                const originalLog = console.log;
+                console.log = function() {
+                    for (let i = 0; i < arguments.length; i++) {
+                        output.innerHTML += arguments[i] + ' ';
+                    }
+                    output.innerHTML += '<br>';
+                };
+
+                // 执行代码
+                eval(code);
+
+                // 恢复原始的 console.log
+                console.log = originalLog;
+            } catch (error) {
+                output.innerHTML = '<span style="color: red;">错误：' + error.message + '</span>';
+            }
+        }
+    </script>
+</body>
+</html>
