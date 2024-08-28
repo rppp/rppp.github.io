@@ -1,0 +1,50 @@
+name: Scan and Update Repository
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  scan-and-update:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        run: |
+          git clone https://github.com/${{ github.repository }}.git .
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Set up Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 git
+          python3 --version
+
+      - name: Run scan_dir.py
+        run: python3 scan_dir.py
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add -A
+          git diff --staged --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git commit -m "Auto-update by GitHub Action [skip ci]"
+
+      - name: Push changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
