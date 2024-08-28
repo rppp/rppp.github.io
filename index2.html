@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Static Page</title>
+</head>
+<body>
+    <h1>GitHub Static Page</h1>
+    <button id="fetchData2">Fetch Data</button>
+    <div id="dataContainer"></div>
+
+    <script>
+        document.getElementById('fetchData2').addEventListener('click', function() {
+            fetch('http://rppp.fun:1624/jsclient.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('dataContainer').innerText = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: ' + error);
+                });
+        });
+    </script>
+</body>
+</html>
