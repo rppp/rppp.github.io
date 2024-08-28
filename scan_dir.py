@@ -4,7 +4,7 @@ import os
 current_dir = os.getcwd()
 
 # 查找所有的 .htm 和 .html 文件
-html_files = [f for f in os.listdir(current_dir) if f.endswith(('.htm', '.html'))]
+html_files = sorted([f for f in os.listdir(current_dir) if f.endswith(('.htm', '.html'))])
 print(html_files)
 
 # 创建 index.html 文件内容
