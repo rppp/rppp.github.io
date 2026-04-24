@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯黑页面</title>
+    <style>
+        /* 清除所有默认边距，确保完全覆盖 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* html 和 body 都设置黑色背景，确保万无一失 */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            /* 纯黑色 */
+        }
+
+        /* 整个页面填满视口 */
+        body {
+            display: block;
+            min-height: 100vh;
+            /* 兼容移动端地址栏导致的高度变化 */
+            min-height: 100dvh;
+            /* 动态视口高度，更好支持现代浏览器 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 完全空白，没有任何内容，只展示纯黑背景 -->
+</body>
+</html>
