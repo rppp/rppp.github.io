@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯色切换 - 点击屏幕</title>
+    <style>
+        /* 清除所有默认边距，确保完全覆盖 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* html 和 body 都设置黑色背景，确保万无一失 */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            /* 纯黑色 */
+        }
+
+        /* 整个页面填满视口 */
+        body {
+            display: block;
+            min-height: 100vh;
+            /* 兼容移动端地址栏导致的高度变化 */
+            min-height: 100dvh;
+            /* 动态视口高度，更好支持现代浏览器 */
+            cursor: pointer;
+            /* 鼠标悬停时显示手型指针，提示可点击 */
+            transition: background-color 0.35s ease;
+            /* 颜色切换时的平滑过渡动画 */
+            -webkit-tap-highlight-color: transparent;
+            /* 移除移动端点击时的高亮背景 */
+            user-select: none;
+            /* 防止快速点击时意外选中文本 */
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 完全空白，没有任何内容，点击屏幕即可在纯黑、纯白、纯灰之间循环切换 -->
+
+    <script>
+        (function() {
+            // 定义三种颜色：纯黑、纯白、纯灰（标准中性灰 #808080）
+            const colors = ['#000000', '#FFFFFF', '#808080'];
+            let currentIndex = 0; // 当前颜色索引，0=黑, 1=白, 2=灰
+
+            // 获取 body 元素
+            const body = document.body;
+
+            /**
+             * 切换到下一个颜色
+             * 循环逻辑：黑→白→灰→黑→白→灰→...
+             */
+            function switchToNextColor() {
+                // 索引 +1，对颜色数组长度取模，实现循环
+                currentIndex = (currentIndex + 1) % colors.length;
+                // 更新 body 的背景色
+                body.style.backgroundColor = colors[currentIndex];
+            }
+
+            // 监听整个 body 的点击事件（桌面端和移动端均适用）
+            body.addEventListener('click', switchToNextColor);
+
+            // 可选：在控制台输出提示，方便调试
+            console.log('💡 点击屏幕即可切换颜色：纯黑 → 纯白 → 纯灰 → 纯黑（循环）');
+            console.log('   当前颜色：', colors[currentIndex]);
+        })();
+    </script>
+</body>
+</html>
