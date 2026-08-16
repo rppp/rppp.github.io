@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON压缩单行工具</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        h2 {
+            margin-bottom: 16px;
+            color: #222;
+        }
+        textarea {
+            width: 100%;
+            height: 220px;
+            padding: 12px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: vertical;
+        }
+        .btns {
+            margin: 12px 0;
+        }
+        button {
+            padding: 9px 18px;
+            font-size: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #2563eb;
+            color: white;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        #result {
+            margin-top: 8px;
+            background: #f5f7fa;
+            padding: 12px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            word-break: break-all;
+        }
+        .error {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <h2>JSON 压缩成单行工具</h2>
+    <textarea id="inputJson" placeholder="粘贴格式化JSON内容..."></textarea>
+    <div class="btns">
+        <button onclick="compressJson()">压缩为单行</button>
+        <button onclick="copyResult()">复制结果</button>
+        <button onclick="clearAll()">清空</button>
+    </div>
+    <div>输出结果：</div>
+    <div id="result"></div>
+
+    <script>
+        function compressJson() {
+            const input = document.getElementById('inputJson').value.trim();
+            const resultBox = document.getElementById('result');
+            try {
+                const obj = JSON.parse(input);
+                // 压缩为无换行单行JSON
+                const compact = JSON.stringify(obj);
+                resultBox.textContent = compact;
+                resultBox.className = '';
+            } catch (err) {
+                resultBox.textContent = 'JSON解析失败：' + err.message;
+                resultBox.className = 'error';
+            }
+        }
+
+        async function copyResult() {
+            const text = document.getElementById('result').textContent;
+            if (!text || text.startsWith('JSON解析失败')) return alert('暂无可复制内容');
+            await navigator.clipboard.writeText(text);
+            alert('复制成功！');
+        }
+
+        function clearAll() {
+            document.getElementById('inputJson').value = '';
+            document.getElementById('result').textContent = '';
+        }
+    </script>
+</body>
+</html>
